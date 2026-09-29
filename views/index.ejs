@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--The website section -->
+<head>
+    <!--Getting the device size-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--The title of the website-->
+    <title>Cocktail Idea Finder</title>
+    <!--The stylesheet used-->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
 
+<!--The body of the website section-->
+<body>
+    <!--The header of the website-->
+    <header>
+        <!--The title shown to the user-->
+        <h1>Cocktail Idea Finder</h1>
+        <!--The details of the website-->
+        <p>Discover a new cocktail recipe with a click of a button!</p>
+    </header>
+    <!--The main section of the body-->
+    <main>
+        <!--Checking if there is an error message-->
+        <% if (error) { %>
+
+            <div class="error">
+                <p><%= error %></p>
+            </div>
+
+        <% } %>
+    <!--Checking if the cocktail is not showing-->
+    <% if (!cocktail) { %>
+        <!--The class to generate the cocktail-->
+    <section class = "generator">
+        <h2> Read to find a cocktail?</h2>
+        <p> Click the button belwo to get a random cocktail.</p>
+        <!--The button to get a random cocktail-->
+    <form action = "/random-cocktail" method = "GET">
+        <button type = "submit">
+            Get random cocktail
+        </button>
+    </form>
+    </section>
+    <% } %>
+        <!--Cehcking if the cocktail is there-->
+        <% if (cocktail) { %>
+    <!--The cocktail card section-->
+    <section class="cocktail-card">
+
+        <!-- Cocktail information -->
+        <div class="cocktail-info">
+            <!--The cocktail name-->
+            <h2><%= cocktail.strDrink %></h2>
+            <!--The cocktail category-->
+            <p>
+                <strong>Category:</strong>
+                <%= cocktail.strCategory %>
+            </p>
+            <!--The type of Glass-->
+            <p>
+                <strong>Glass:</strong>
+                <%= cocktail.strGlass %>
+            </p>
+            <!--A header to seperate for ingredients-->
+            <h3>Ingredients</h3>
+            <!--The ingredient section-->
+            <ul>
+                <!--The APi to check for 15 possibe ingredients-->
+                <% for (let i = 1; i <= 15; i++) { %>
+                    <!--Get the ingredients and display-->
+                    <% 
+                        const ingredient = cocktail[`strIngredient${i}`];
+                        const measure = cocktail[`strMeasure${i}`];
+                    %>
+                    <!--Check if the ingredient exists-->
+                    <% if (ingredient) { %>
+                        <li>
+                            <!--Show the ingredients names and measure-->
+                            <%= measure || "" %>
+                            <%= ingredient %>
+                        </li>
+                    <% } %>
+                    <!--End the loop-->
+                <% } %>
+            </ul>
+            <!--The instruction section-->
+            <h3>Instructions</h3>
+            <!--Show the instruction to make cocktail-->
+            <p class="instructions">
+                <%= cocktail.strInstructions %>
+            </p>
+
+        </div>
+
+
+        <!-- The cocktail image sectiono -->
+        <div class="cocktail-image">
+            <!--Displaying the image from the API-->
+            <img
+                src="<%= cocktail.strDrinkThumb %>"
+                alt="<%= cocktail.strDrink %>"
+            >
+
+        </div>
+
+
+        <!-- The Button to get a new cocktail -->
+        <div class="new-cocktail">
+            <!--When the button is pressed, get a random cocktail-->
+            <form action="/random-cocktail" method="GET">
+                <!--The button type and print in button-->
+                <button type="submit">
+                    Get Another Cocktail
+                </button>
+            </form>
+
+        </div>
+
+    </section>
+
+<% } %>
+
+    </main>
+    <!--The footer section of the website-->
+    <footer>
+        <!--The footer details-->
+        <p>Powered by TheCocktailDB</p>
+    </footer>
+
+</body>
+
+</html>
